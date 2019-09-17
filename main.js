@@ -2,7 +2,7 @@ var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
 var width = Number(canvas.getAttribute("width"));
 var height = Number(canvas.getAttribute("height"));
-var n = 4;
+var n = 8;
 var pList = rndPoints(width, height, n);
 
 drawPoints(pList);
@@ -56,7 +56,7 @@ function cuadEq(a, b, c) {
 function rndPoints(width, height, n) {
   // returns a list of random points [x,y]
   var pList = [];
-  pList.push([0, height]);
+  pList.push([0, height * 0.9]);
   for (var i = 1; i < n; i++) {
     pList.push([
       (2 * Math.random() * width) / n + pList[i - 1][0],
@@ -82,16 +82,24 @@ function vecSum(a, b) {
   return [a[0] + b[0], a[1] + b[1]];
 }
 
-var x = pList[0][0];
-var y = pList[0][1];
 var vel = 0;
-var pos = [x, y];
+var pos = [pList[0][0], pList[0][1]];
 var dist = 0;
 
-var vecS = [pList[1][0] - pList[0][0], pList[1][1] - pList[0][1]];
-var vecUS = multEscalar(vecS, 1 / magn(vecS));
-var acc = prodPunto([0, -9.8], vecUS);
-var dv = acc / 60;
+var vecS;
+var vecUS;
+var acc;
+
+var k = 0;
+
+function setIni(idx) {
+  vecS = [pList[idx + 1][0] - pList[idx][0], pList[idx + 1][1] - pList[idx][1]];
+  vecUS = multEscalar(vecS, 1 / magn(vecS));
+  acc = prodPunto([0, -9.8], vecUS);
+  console.log(idx, vecS, vecUS, acc);
+}
+
+setIni(k);
 
 function animate(t) {
   ctx.clearRect(0, 0, width, height);
@@ -99,14 +107,19 @@ function animate(t) {
   drawPoints(pList);
 
   // do the math to calculate position x, y
-  var ds = vel / 60;
-  dist += ds;
-  var dvecS = multEscalar(vecUS, ds);
+  dist += vel / 60;
+  var dvecS = multEscalar(vecUS, vel / 60);
   pos = vecSum(pos, dvecS);
-  if (magn(vecS) >= dist) console.log(vel, ds, dist, magn(vecS));
-  vel += dv;
 
-  //console.log(x, y, vecS, magn(vecS), acc);
+  if (dist >= magn(vecS)) {
+    console.log("k", k);
+    k++;
+    setIni(k);
+    dist = 0;
+  }
+  vel += acc / 60;
+
+  console.log(vel, pos, dist, magn(vecS));
 
   ctx.beginPath();
   ctx.strokeStyle = "blue";
