@@ -2,7 +2,7 @@ var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
 var width = Number(canvas.getAttribute("width"));
 var height = Number(canvas.getAttribute("height"));
-var n = 8;
+var n = 30;
 var pList = rndPoints(width, height, n);
 
 drawPoints(pList);
@@ -56,7 +56,7 @@ function cuadEq(a, b, c) {
 function rndPoints(width, height, n) {
   // returns a list of random points [x,y]
   var pList = [];
-  pList.push([0, height * 0.9]);
+  pList.push([0, height * 0.99]);
   for (var i = 1; i < n; i++) {
     pList.push([
       (2 * Math.random() * width) / n + pList[i - 1][0],
@@ -91,12 +91,13 @@ var vecUS;
 var acc;
 
 var k = 0;
+var count = 0;
 
 function setIni(idx) {
   vecS = [pList[idx + 1][0] - pList[idx][0], pList[idx + 1][1] - pList[idx][1]];
   vecUS = multEscalar(vecS, 1 / magn(vecS));
   acc = prodPunto([0, -9.8], vecUS);
-  console.log(idx, vecS, vecUS, acc);
+  //console.log(idx, vecS, vecUS, acc);
 }
 
 setIni(k);
@@ -114,12 +115,16 @@ function animate(t) {
   if (dist >= magn(vecS)) {
     console.log("k", k);
     k++;
+    if (k == pList.length - 1) {
+      console.log(count / 60);
+      return;
+    }
     setIni(k);
     dist = 0;
   }
   vel += acc / 60;
-
-  console.log(vel, pos, dist, magn(vecS));
+  count++;
+  //console.log(vel, pos, dist, magn(vecS));
 
   ctx.beginPath();
   ctx.strokeStyle = "blue";
