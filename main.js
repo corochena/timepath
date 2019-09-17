@@ -10,8 +10,9 @@ console.log(pList, totalTime(pList));
 
 function drawPoints(pList) {
   ctx.beginPath();
+  ctx.strokeStyle = "black";
   pList.forEach(function(p) {
-    ctx.arc(p[0], height - p[1], 2, 0, 7);
+    ctx.arc(p[0], height - p[1], 0.5, 0, 7);
     ctx.stroke();
   });
 }
@@ -65,6 +66,56 @@ function rndPoints(width, height, n) {
   return pList;
 }
 
+function magn(vector) {
+  return Math.sqrt(vector[0] * vector[0] + vector[1] * vector[1]);
+}
+
+function multEscalar(vector, k) {
+  return [k * vector[0], k * vector[1]];
+}
+
+function prodPunto(a, b) {
+  return a[0] * b[0] + a[1] * b[1];
+}
+
+function vecSum(a, b) {
+  return [a[0] + b[0], a[1] + b[1]];
+}
+
+var x = pList[0][0];
+var y = pList[0][1];
+var vel = 0;
+var pos = [x, y];
+var dist = 0;
+
+var vecS = [pList[1][0] - pList[0][0], pList[1][1] - pList[0][1]];
+var vecUS = multEscalar(vecS, 1 / magn(vecS));
+var acc = prodPunto([0, -9.8], vecUS);
+var dv = acc / 60;
+
+function animate(t) {
+  ctx.clearRect(0, 0, width, height);
+
+  drawPoints(pList);
+
+  // do the math to calculate position x, y
+  var ds = vel / 60;
+  dist += ds;
+  var dvecS = multEscalar(vecUS, ds);
+  pos = vecSum(pos, dvecS);
+  if (magn(vecS) >= dist) console.log(vel, ds, dist, magn(vecS));
+  vel += dv;
+
+  //console.log(x, y, vecS, magn(vecS), acc);
+
+  ctx.beginPath();
+  ctx.strokeStyle = "blue";
+  ctx.arc(pos[0], height - pos[1], 6, 0, 7);
+  ctx.stroke();
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
 // console.log(rndPoints(1200, 600, 10));
 // console.log(time([500, 200], [600, 100]));
 
