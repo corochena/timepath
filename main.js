@@ -2,10 +2,10 @@ var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
 var width = Number(canvas.getAttribute("width"));
 var height = Number(canvas.getAttribute("height"));
-var n = 30;
+var n = 15;
 var pList = rndPoints(width, height, n);
+//pList = [[-1000,400], [-600,200], [-400,200], [0,300], [100,-400], [200,0], [500,100], [700,-300]];
 
-drawPoints(pList);
 console.log(pList, totalTime(pList));
 
 function drawPoints(pList) {
@@ -42,7 +42,7 @@ function time(pointA, pointB, vel) {
   else t = cuadEq(0.5 * acc, vel, -s);
 
   if (t) {
-    console.log(t, vel + acc * t);
+    // console.log(t, vel + acc * t);
     return [t, vel + acc * t];
   } else return false;
 }
