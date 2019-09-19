@@ -10,7 +10,7 @@ console.log(pList, totalTime(pList));
 
 function drawPoints(pList) {
   ctx.beginPath();
-  ctx.strokeStyle = "black";
+  ctx.strokeStyle = "red";
   pList.forEach(function(p) {
     ctx.arc(p[0], height - p[1], 0.5, 0, 7);
     ctx.stroke();
