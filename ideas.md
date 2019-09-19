@@ -11,3 +11,4 @@ Quiero
 1. Refactor el codigo. Decidir que variables usar para vel, pos, dv, ds, etc
 2. Mostrar el tiempo, distancia, velocidad y aceleracion
 3. Refactor la funcion totalTime usando array.reduce
+4. Mejorar la respuesta del tiempo considerar una velocidad media quizas...
