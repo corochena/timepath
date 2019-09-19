@@ -109,7 +109,7 @@ function animate(t) {
   drawPoints(pList);
 
   // do the math to calculate position x, y
-  dist += vel / 60;
+  dist += (vel / 60 + 0.5 * acc / 3600 );
   var dvecS = multEscalar(vecUS, vel / 60);
   pos = vecSum(pos, dvecS);
 
