@@ -60,7 +60,7 @@ function rndPoints(width, height, n) {
   for (var i = 1; i < n; i++) {
     pList.push([
       //(2 * Math.random() * width) / n + pList[i - 1][0],
-      width * Math.random()
+      width * Math.random(),
       height * Math.random()
     ]);
   }
